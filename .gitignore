@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 src/lib/ProductManager.svelte
 src/lib/ProductDev.svelte
+.env

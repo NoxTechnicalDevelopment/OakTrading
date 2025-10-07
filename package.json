@@ -19,6 +19,7 @@
     "vite": "^7.1.7"
   },
   "dependencies": {
-    "@leveluptuts/svelte-fit": "^1.0.3"
+    "@leveluptuts/svelte-fit": "^1.0.3",
+    "dotenv": "^17.2.3"
   }
 }

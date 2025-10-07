@@ -47,27 +47,15 @@
       <p>Loading products...</p>
     {:else}
       <div class="products-row">
-        {#if isLocalhost}
-          {#each products as product}
-            <Product product={{
-              ID: product.ID,
-              product_name: product.product_name,
-              price_buy: product.price_buy,
-              price_sell: product.price_sell,
-              quantity: product.quantity
-            }} />
-          {/each}
-        {:else}
-          {#each products.filter(p => p.quantity > 0) as product}
-            <Product product={{
-              ID: product.ID,
-              product_name: product.product_name,
-              price_buy: product.price_buy,
-              price_sell: product.price_sell,
-              quantity: product.quantity
-            }} />
-          {/each}
-        {/if}
+        {#each products.filter(p => p.quantity > 0) as product}
+          <Product product={{
+            ID: product.ID,
+            product_name: product.product_name,
+            price_buy: product.price_buy,
+            price_sell: product.price_sell,
+            quantity: product.quantity
+          }} />
+        {/each}
       </div>
     {/if}
   </div>
