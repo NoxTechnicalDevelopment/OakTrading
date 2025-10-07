@@ -13,38 +13,6 @@
 
   let buyHovered = false;
   let sellHovered = false;
-  let isLocalhost = false;
-  let adminBusy = false;
-
-  let running_quantity = product.quantity;
-
-  onMount(() => {
-    try {
-      isLocalhost = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === '::1';
-    } catch (e) {
-      isLocalhost = false;
-    }
-  });
-
-  async function quantity_change(positive : boolean) {
-    adminBusy = true;
-    running_quantity += positive ? 1 : -1;
-    if (running_quantity < 0) running_quantity = 0;
-    product.quantity = running_quantity;
-    try {
-      const res = await fetch('https://oakapi.onrender.com/products/' + product.ID, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ quantity: running_quantity + 1 })
-      });
-      const data = await res.json();
-      console.log('edit response', data);
-    } catch (e) {
-      console.error('edit failed', e);
-    } finally {
-      adminBusy = false;
-    }
-  }
 </script>
 
 <div class="product-card">
@@ -56,13 +24,12 @@
   <img class="product-img" src={`/images/products/${product.ID}.webp`} alt={product.product_name} width="200" />
 
   <div class="product-body">
-    <h3 class="product-stock">{#if isLocalhost}<button on:click={() => quantity_change(true)} disabled={adminBusy}>+</button>{/if}<strong>Stock:</strong> {product.quantity} {#if isLocalhost}<button on:click={() => quantity_change(false)} disabled={adminBusy}>-</button>{/if}</h3>
+    <h3 class="product-stock"><strong>Stock:</strong></h3>
     <div class="product-actions">
       <button class="btn_buy"
         on:mouseenter={() => buyHovered = true}
         on:mouseleave={() => buyHovered = false}
         style="position: relative; overflow: hidden;">
-        <!-- sizer stays in flow and sizes the button to the price (hidden visually) -->
         <span class="sizer" aria-hidden="true">{'$' + product.price_buy.toLocaleString()}</span>
 
         {#if !buyHovered}
@@ -79,7 +46,6 @@
         on:mouseenter={() => sellHovered = true}
         on:mouseleave={() => sellHovered = false}
         style="position: relative; overflow: hidden;">
-        <!-- sizer stays in flow and sizes the button to the price (hidden visually) -->
         <span class="sizer" aria-hidden="true">{'$' + product.price_sell.toLocaleString()}</span>
 
         {#if !sellHovered}
