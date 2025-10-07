@@ -24,7 +24,7 @@
   <img class="product-img" src={`/images/products/${product.ID}.webp`} alt={product.product_name} width="200" />
 
   <div class="product-body">
-    <h3 class="product-stock"><strong>Stock:</strong></h3>
+    <h3 class="product-stock"><strong>Stock:</strong> {product.quantity}</h3>
     <div class="product-actions">
       <button class="btn_buy"
         on:mouseenter={() => buyHovered = true}
