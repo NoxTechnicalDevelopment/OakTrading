@@ -1,6 +1,5 @@
 <script lang="ts">
   import { fly } from 'svelte/transition';
-  import { onMount } from 'svelte';
   import { fit, parent_style } from '@leveluptuts/svelte-fit'
 
   export let product: {
