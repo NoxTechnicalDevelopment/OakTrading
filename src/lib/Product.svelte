@@ -32,7 +32,7 @@
     if (running_quantity < 0) running_quantity = 0;
     product.quantity = running_quantity;
     try {
-      const res = await fetch('http://localhost:5000/products/' + product.ID, {
+      const res = await fetch('https://oakapi.onrender.com/products/' + product.ID, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ quantity: running_quantity + 1 })

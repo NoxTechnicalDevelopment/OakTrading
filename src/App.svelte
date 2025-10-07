@@ -20,7 +20,7 @@
 
   onMount(async () => {
     try {
-      const res = await fetch('http://localhost:5000/products');
+      const res = await fetch('https://oakapi.onrender.com/products');
       const data = await res.json();
       products = data.products;
     } catch (e) {
