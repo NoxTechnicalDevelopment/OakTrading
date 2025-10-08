@@ -9,6 +9,7 @@
     price_buy: number;
     price_sell: number;
     quantity: number;
+    image_url?: string;
   };
 
   let products: ProductType[] = [];
@@ -44,7 +45,8 @@
             product_name: product.product_name,
             price_buy: product.price_buy,
             price_sell: product.price_sell,
-            quantity: product.quantity
+            quantity: product.quantity,
+            image_url: product.image_url
           }} />
         {/each}
       </div>
