@@ -68,6 +68,7 @@
     return null;
   }
 
+  // ONLY replace submitBuy
   async function submitBuy() {
     error = validate();
     if (error) return;
@@ -77,56 +78,37 @@
 
     try {
         const imageUrl = `${location.origin}/images/products/${product.ID}.webp`;
-        const unit = product.price_buy;
-        const total = unit * qty;
 
-        // Discord embed payload
-        const embed = {
-            title: '🛒 New Buy Request',
-            description: `**${username.trim()}** wants to buy **${product.product_name}**`,
-            color: 0x1f8f4e, // green-ish
-            fields: [
-                { name: 'Item', value: `${product.product_name} \`(${product.product_id})\``, inline: true },
-                { name: 'Quantity', value: String(qty), inline: true },
-                { name: 'Unit Price', value: `$${unit.toLocaleString()}`, inline: true },
-                { name: 'Total', value: `$${total.toLocaleString()}`, inline: true },
-                { name: 'Console', value: onConsole ? 'Yes' : 'No', inline: true },
-                { name: 'Stock Remaining', value: String(product.quantity - qty), inline: true },
-            ],
-            thumbnail: { url: imageUrl },
-            image: { url: imageUrl },
-            timestamp: new Date().toISOString(),
-            footer: { text: `DB ID: ${product.ID}` }
-        };
-
-        const payload = {
-            content: null,                   // no plain-text message; embed only
-            username: 'Shop Bot',            // override webhook name (optional)
-            avatar_url: undefined,           // keep default (or set a URL)
-            embeds: [embed],
-            allowed_mentions: { parse: [] }  // avoid accidental pings
-        };
-
-        const res = await fetch(webhookUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+        // Call YOUR server relay that posts to Discord
+        const res = await fetch(`${apiBase}/webhooks/buy`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username: username.trim(),
+            qty,
+            on_console: onConsole,
+            product_id: product.product_id,
+            product_db_id: product.ID,
+            product_name: product.product_name,
+            unit_price: product.price_buy,
+            image_url: imageUrl
+        })
         });
 
-        if (!res.ok) {
-            // Discord returns empty body on success; try to read text for errors
-            const body = await res.text();
-            throw new Error(`Discord webhook error ${res.status}${body ? `: ${body}` : ''}`);
+        if (!res.ok && res.status !== 204) {
+            const txt = await res.text();
+            throw new Error(`Buy relay failed (${res.status}): ${txt || 'no body'}`);
         }
 
         success = true;
         dispatch('submitted');
     } catch (e: any) {
-        error = e?.message ?? 'Failed to submit Discord webhook.';
+        error = e?.message ?? 'Failed to submit buy request.';
     } finally {
         loading = false;
     }
-  }
+}
+
 
 
   function backdropClick(e: MouseEvent) {
