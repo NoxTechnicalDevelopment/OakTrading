@@ -183,22 +183,28 @@
 
       {#if success}
         <div class="alert success" transition:fade>
-          Request sent!
+          Order registered!
           {#if orderId}
-            <div style="margin-top:.35rem; display:flex; align-items:center; gap:.5rem; flex-wrap:wrap;">
-              <span>Order ID:</span>
-              <code style="padding:.15rem .35rem; border-radius:6px; background:#0b2316;">{orderId}</code>
+            <div style="margin-top:.5rem; display:flex; align-items:center; gap:.5rem; flex-wrap:wrap;">
+              <span><strong>Order ID:</strong></span>
+              <code style="padding:.2rem .45rem; border-radius:6px; background:#0b2316;">{orderId}</code>
               <button
                 type="button"
                 class="btn ghost"
                 on:click={() => orderId && navigator.clipboard?.writeText(orderId)}
-                aria-label="Copy order ID">
+                aria-label="Copy order ID"
+              >
                 Copy
               </button>
             </div>
+            <p style="margin-top:.75rem; line-height:1.4;">
+              Please send this Order ID on the <strong>OakTrading</strong> Discord posting.  
+              We will ping you as soon as we can fuffil your order!
+            </p>
           {/if}
         </div>
       {/if}
+
 
       <div class="dialog__actions">
         <button type="button" class="btn ghost" on:click={() => dispatch('close')} disabled={loading}>
