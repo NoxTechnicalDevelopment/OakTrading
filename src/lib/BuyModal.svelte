@@ -11,7 +11,6 @@
     price_sell: number;
     quantity: number;
   };
-  export let webhookUrl: string;
 
   type BuyPayload = {
     type: 'buy';
@@ -80,7 +79,7 @@
         const imageUrl = `${location.origin}/images/products/${product.ID}.webp`;
 
         // Call YOUR server relay that posts to Discord
-        const res = await fetch(`${apiBase}/webhooks/buy`, {
+        const res = await fetch(`https://oakapi.onrender.com/webhooks/buy`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
