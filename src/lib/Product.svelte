@@ -12,9 +12,6 @@
     quantity: number;
   };
 
-  /** Set this from the parent or env */
-  export let webhookUrl: string = 'https://discord.com/api/webhooks/1425392578798551123/oHZ7ncmoPez4vHoQMjdxLXPQLSovGlcDNRJvl_YOGAcR6yZQ16npGHsSOFFI-8ZFL4E5';
-
   let buyHovered = false;
   let sellHovered = false;
 
@@ -91,7 +88,6 @@
   <BuyModal
     id="buy-dialog"
     product={product}
-    webhookUrl={webhookUrl}
     on:close={closeBuy}
     on:submitted={handleBuySubmitted}
   />
