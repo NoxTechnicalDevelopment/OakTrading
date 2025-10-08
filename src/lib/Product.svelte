@@ -3,7 +3,7 @@
   import { fit, parent_style } from '@leveluptuts/svelte-fit';
   import BuyModal from './BuyModal.svelte';
   import SellModal from './SellModal.svelte';
-  
+
   export let product: {
     ID: number;
     product_id: string;
@@ -56,7 +56,7 @@
           </span>
         {:else}
           <span class="label" in:fly={{ y: -40, duration: 200 }} out:fly={{ y: 20, duration: 200 }}>
-            Add to Cart
+            Buy
           </span>
         {/if}
       </button>

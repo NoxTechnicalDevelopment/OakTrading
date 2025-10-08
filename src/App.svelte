@@ -1,7 +1,4 @@
 <script lang="ts">
-  import svelteLogo from './assets/svelte.svg';
-  import viteLogo from '/vite.svg';
-  import Counter from './lib/Counter.svelte';
   import Product from './lib/Product.svelte';
   import { onMount } from 'svelte';
 
@@ -32,6 +29,8 @@
 
 <main>
   <h1>OakTrading</h1>
+  <h3>Instantly buy and sell items of all types!</h3>
+
   
   <div class="card">
     {#if loading}
