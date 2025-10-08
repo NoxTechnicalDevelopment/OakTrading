@@ -148,11 +148,20 @@
 
     <form class="dialog__form" on:submit|preventDefault={submitBuy}>
       <label>
-        <span>Username</span>
+        <span>Roblox Display Name</span>
         <input
           bind:this={firstField}
           type="text"
           placeholder="Your in-game name"
+          autocomplete="username"
+        />
+      </label>
+      <label>
+        <span>Roblox Username</span>
+        <input
+          bind:this={firstField}
+          type="text"
+          placeholder="Your Roblox username"
           bind:value={username}
           autocomplete="username"
           required
