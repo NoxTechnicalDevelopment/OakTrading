@@ -2,7 +2,8 @@
   import { fly } from 'svelte/transition';
   import { fit, parent_style } from '@leveluptuts/svelte-fit';
   import BuyModal from './BuyModal.svelte';
-
+  import SellModal from './SellModal.svelte';
+  
   export let product: {
     ID: number;
     product_id: string;
@@ -16,13 +17,13 @@
   let sellHovered = false;
 
   let showBuy = false;
+  let showSell = false;
 
-  function openBuy() {
-    showBuy = true;
-  }
-  function closeBuy() {
-    showBuy = false;
-  }
+  const openBuy = () => (showBuy = true);
+  const closeBuy = () => (showBuy = false);
+
+  const openSell = () => (showSell = true);
+  const closeSell = () => (showSell = false);
 </script>
 
 <div class="product-card">
@@ -59,12 +60,16 @@
           </span>
         {/if}
       </button>
-      <button class="btn_sell"
-        on:mouseenter={() => sellHovered = true}
-        on:mouseleave={() => sellHovered = false}
-        style="position: relative; overflow: hidden;">
+      <button
+        class="btn_sell"
+        on:mouseenter={() => (sellHovered = true)}
+        on:mouseleave={() => (sellHovered = false)}
+        on:click={openSell}
+        style="position: relative; overflow: hidden;"
+        aria-haspopup="dialog"
+        aria-controls="sell-dialog"
+      >
         <span class="sizer" aria-hidden="true">{'$' + product.price_sell.toLocaleString()}</span>
-
         {#if !sellHovered}
           <span class="price" in:fly={{ y: -20, duration: 200 }} out:fly={{ y: 40, duration: 200 }}>
             {'$' + product.price_sell.toLocaleString()}
@@ -84,5 +89,12 @@
     id="buy-dialog"
     product={product}
     on:close={closeBuy}
+  />
+{/if}
+{#if showSell}
+  <SellModal
+    id="sell-dialog"
+    product={product}
+    on:close={closeSell}
   />
 {/if}
