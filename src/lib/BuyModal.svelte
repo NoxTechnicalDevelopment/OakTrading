@@ -32,6 +32,7 @@
   let username = '';
   let qty: number = 1;
   let onConsole = false;
+  let orderId: string | null = null;
 
   let loading = false;
   let error: string | null = null;
@@ -69,46 +70,50 @@
 
   // ONLY replace submitBuy
   async function submitBuy() {
-    error = validate();
-    if (error) return;
+  error = validate();
+  if (error) return;
 
-    loading = true;
-    success = false;
+  loading = true;
+  success = false;
+  orderId = null;
 
-    try {
-        const imageUrl = `${location.origin}/images/products/${product.ID}.webp`;
+  try {
+    const imageUrl = `${location.origin}/images/products/${product.ID}.webp`;
 
-        // Call YOUR server relay that posts to Discord
-        const res = await fetch(`https://oakapi.onrender.com/webhooks/buy`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            username: username.trim(),
-            qty,
-            on_console: onConsole,
-            product_id: product.product_id,
-            product_db_id: product.ID,
-            product_name: product.product_name,
-            unit_price: product.price_buy,
-            image_url: imageUrl
-        })
-        });
+    const res = await fetch(`https://oakapi.onrender.com/webhooks/buy`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: username.trim(),
+        qty,
+        on_console: onConsole,
+        product_id: product.product_id,
+        product_db_id: product.ID,
+        product_name: product.product_name,
+        unit_price: product.price_buy,
+        image_url: imageUrl
+      })
+    });
 
-        if (!res.ok && res.status !== 204) {
-            const txt = await res.text();
-            throw new Error(`Buy relay failed (${res.status}): ${txt || 'no body'}`);
-        }
-
-        success = true;
-        dispatch('submitted');
-    } catch (e: any) {
-        error = e?.message ?? 'Failed to submit buy request.';
-    } finally {
-        loading = false;
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error(`Buy relay failed (${res.status}): ${txt || 'no body'}`);
     }
+
+    // Expect JSON with { order_id }
+    if (res.headers.get('content-type')?.includes('application/json')) {
+      const data = await res.json();
+      orderId = (data?.order_id ?? '').toString();
+    }
+
+    success = true;
+    dispatch('submitted');
+  } catch (e: any) {
+    error = e?.message ?? 'Failed to submit buy request.';
+  } finally {
+    loading = false;
+  }
 }
-
-
 
   function backdropClick(e: MouseEvent) {
     if (e.target === e.currentTarget && !loading) dispatch('close');
@@ -178,7 +183,20 @@
 
       {#if success}
         <div class="alert success" transition:fade>
-          Request sent! We'll process your order shortly.
+          Request sent!
+          {#if orderId}
+            <div style="margin-top:.35rem; display:flex; align-items:center; gap:.5rem; flex-wrap:wrap;">
+              <span>Order ID:</span>
+              <code style="padding:.15rem .35rem; border-radius:6px; background:#0b2316;">{orderId}</code>
+              <button
+                type="button"
+                class="btn ghost"
+                on:click={() => orderId && navigator.clipboard?.writeText(orderId)}
+                aria-label="Copy order ID">
+                Copy
+              </button>
+            </div>
+          {/if}
         </div>
       {/if}
 
