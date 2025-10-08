@@ -23,11 +23,6 @@
   function closeBuy() {
     showBuy = false;
   }
-
-  function handleBuySubmitted() {
-    // optional: toast/snackbar or refetch inventory
-    showBuy = false;
-  }
 </script>
 
 <div class="product-card">
@@ -89,6 +84,5 @@
     id="buy-dialog"
     product={product}
     on:close={closeBuy}
-    on:submitted={handleBuySubmitted}
   />
 {/if}
