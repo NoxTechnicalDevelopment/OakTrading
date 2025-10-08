@@ -15,7 +15,6 @@
   };
 
   let products: ProductType[] = [];
-  let isLocalhost = false;
   let loading = true;
 
   onMount(async () => {
@@ -27,14 +26,6 @@
       console.error('Failed to fetch products', e);
     } finally {
       loading = false;
-    }
-  });
-
-  onMount(() => {
-    try {
-      isLocalhost = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === '::1';
-    } catch (e) {
-      isLocalhost = false;
     }
   });
 </script>
@@ -50,6 +41,7 @@
         {#each products.filter(p => p.quantity > 0) as product}
           <Product product={{
             ID: product.ID,
+            product_id: product.product_id,
             product_name: product.product_name,
             price_buy: product.price_buy,
             price_sell: product.price_sell,

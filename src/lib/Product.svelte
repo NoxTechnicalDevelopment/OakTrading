@@ -4,6 +4,7 @@
 
   export let product: {
     ID: number;
+    product_id: string;
     product_name: string;
     price_buy: number;
     price_sell: number;
