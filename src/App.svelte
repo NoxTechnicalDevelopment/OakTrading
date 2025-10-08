@@ -37,7 +37,7 @@
       <p>Loading products...</p>
     {:else}
       <div class="products-row">
-        {#each products.filter(p => p.quantity > 0) as product}
+        {#each products as product}
           <Product product={{
             ID: product.ID,
             product_id: product.product_id,
