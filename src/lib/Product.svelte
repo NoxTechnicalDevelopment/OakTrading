@@ -11,6 +11,7 @@
     price_buy: number;
     price_sell: number;
     quantity: number;
+    image_url?: string;
   };
 
   let buyHovered = false;
@@ -32,7 +33,7 @@
       <h4 use:fit>{product.product_name}</h4>
     </div>
   </div>
-  <img class="product-img" src={`/images/products/${product.ID}.webp`} alt={product.product_name} width="200" />
+  <img class="product-img" src={product.image_url || `/images/products/${product.ID}.webp`} alt={product.product_name} width="200" />
 
   <div class="product-body">
     <h3 class="product-stock"><strong>Stock:</strong> {product.quantity}</h3>
