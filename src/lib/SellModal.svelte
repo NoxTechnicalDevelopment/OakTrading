@@ -182,7 +182,7 @@
             </div>
             <p style="margin-top:.75rem; line-height:1.4;">
               Please post this Order ID on the <strong>OakTrading</strong> Discord post.
-              You will be pinged once your order is complete.
+              We will ping you once we are able to fulfill your order.
             </p>
           {/if}
         </div>
